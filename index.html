@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ultimate Countdown Timer with Animated Background</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #1e3c72, #2a5298, #6a11cb, #2575fc);
+      background-size: 400% 400%;
+      animation: gradientBackground 15s ease infinite;
+      color: white;
+      transition: color 0.5s ease;
+    }
+
+    @keyframes gradientBackground {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .main-container {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+    }
+
+    .countdown-container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      width: 400px;
+      transition: background 0.5s ease;
+    }
+
+    h1 {
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
+      font-weight: bold;
+      animation: fadeIn 1s ease;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+      animation: fadeIn 1.5s ease;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      outline: none;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .input-group input:focus {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+
+    .timer {
+      font-size: 3.5rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      letter-spacing: 2px;
+      animation: fadeIn 2s ease;
+    }
+
+    .progress-circle {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 1.5rem;
+      animation: fadeIn 2.5s ease;
+    }
+
+    .progress-circle svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .progress-circle circle {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.2);
+      stroke-width: 10;
+    }
+
+    .progress-circle .progress {
+      stroke: #61dafb;
+      stroke-width: 10;
+      stroke-dasharray: 440;
+      stroke-dashoffset: 440;
+      transition: stroke-dashoffset 0.5s ease;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      animation: fadeIn 3s ease;
+    }
+
+    .controls button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #61dafb;
+      color: #1e3c72;
+      font-weight: bold;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .controls button:hover {
+      background: #21a1f1;
+      transform: scale(1.05);
+    }
+
+    .controls button:active {
+      background: #1a7bb9;
+      transform: scale(0.95);
+    }
+
+    .theme-switcher {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 1.2rem;
+      transition: background 0.3s ease, transform 0.3s ease;
+      animation: rotate 2s infinite linear;
+    }
+
+    .theme-switcher:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: rotate(180deg);
+    }
+
+    .games-container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      width: 400px;
+      animation: fadeIn 3.5s ease;
+    }
+
+    .games-container h2 {
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+
+    .games-container button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #61dafb;
+      color: #1e3c72;
+      font-weight: bold;
+      transition: background 0.3s ease, transform 0.2s ease;
+      margin-bottom: 1rem;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .games-container button:hover {
+      background: #21a1f1;
+      transform: scale(1.05);
+    }
+
+    .games-container button:active {
+      background: #1a7bb9;
+      transform: scale(0.95);
+    }
+
+    .games-container button::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300%;
+      height: 300%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%) scale(0);
+      border-radius: 50%;
+      transition: transform 0.5s ease;
+    }
+
+    .games-container button:active::after {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body class="default-theme">
+  <div class="main-container">
+    <!-- Countdown Timer -->
+    <div class="countdown-container">
+      <h1>Ultimate Countdown Timer</h1>
+      <div class="input-group">
+        <label for="time-input">Set Time (seconds):</label>
+        <input type="number" id="time-input" min="1" value="60" placeholder="Enter time in seconds">
+      </div>
+      <div class="timer">
+        <span id="minutes">00</span>:<span id="seconds">00</span>
+      </div>
+      <div class="progress-circle">
+        <svg>
+          <circle cx="75" cy="75" r="70"></circle>
+          <circle class="progress" cx="75" cy="75" r="70"></circle>
+        </svg>
+      </div>
+      <div class="controls">
+        <button id="start">Start</button>
+        <button id="pause">Pause</button>
+        <button id="reset">Reset</button>
+      </div>
+    </div>
+
+    <!-- Mini-Games -->
+    <div class="games-container">
+      <h2>Mini-Games</h2>
+      <button id="flappy-bird">Flappy Bird</button>
+      <button id="tic-tac-toe">Tic-Tac-Toe</button>
+      <button id="memory-match">Memory Match</button>
+      <button id="snake-game">Snake Game</button>
+      <button id="game-2048">2048</button>
+      <button id="tetris">Tetris</button>
+      <button id="pong">Pong</button>
+    </div>
+  </div>
+
+  <button class="theme-switcher" id="theme-switcher">🎨</button>
+  <audio id="alert-sound" src="https://assets.mixkit.co/active_storage/sfx/2593/2593-preview.mp3"></audio>
+  <script>
+    let countdownTime = 0;
+    let timerInterval;
+    let isPaused = false;
+
+    // Get DOM elements
+    const minutesDisplay = document.getElementById('minutes');
+    const secondsDisplay = document.getElementById('seconds');
+    const startButton = document.getElementById('start');
+    const pauseButton = document.getElementById('pause');
+    const resetButton = document.getElementById('reset');
+    const timeInput = document.getElementById('time-input');
+    const progressCircle = document.querySelector('.progress-circle .progress');
+    const alertSound = document.getElementById('alert-sound');
+    const themeSwitcher = document.getElementById('theme-switcher');
+    const body = document.body;
+
+    // Function to update the timer display
+    function updateTimer() {
+      if (!isPaused) {
+        const minutes = Math.floor(countdownTime / 60);
+        const seconds = countdownTime % 60;
+
+        minutesDisplay.textContent = String(minutes).padStart(2, '0');
+        secondsDisplay.textContent = String(seconds).padStart(2, '0');
+
+        // Update progress circle
+        const totalTime = parseInt(timeInput.value);
+        const progress = ((totalTime - countdownTime) / totalTime) * 440;
+        progressCircle.style.strokeDashoffset = 440 - progress;
+
+        if (countdownTime <= 0) {
+          clearInterval(timerInterval);
+          alertSound.play();
+          alert("Time's up!");
+        } else {
+          countdownTime--;
+        }
+      }
+    }
+
+    // Start the timer
+    startButton.addEventListener('click', () => {
+      if (!timerInterval) {
+        countdownTime = parseInt(timeInput.value);
+        if (isNaN(countdownTime)) {
+          alert("Please enter a valid time!");
+          return;
+        }
+        timerInterval = setInterval(updateTimer, 1000);
+        isPaused = false;
+        pauseButton.textContent = 'Pause';
+      }
+    });
+
+    // Pause the timer
+    pauseButton.addEventListener('click', () => {
+      isPaused = !isPaused;
+      pauseButton.textContent = isPaused ? 'Resume' : 'Pause';
+    });
+
+    // Reset the timer
+    resetButton.addEventListener('click', () => {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      countdownTime = parseInt(timeInput.value);
+      minutesDisplay.textContent = '00';
+      secondsDisplay.textContent = '00';
+      progressCircle.style.strokeDashoffset = 440;
+      isPaused = false;
+      pauseButton.textContent = 'Pause';
+    });
+
+    // Theme switcher
+    themeSwitcher.addEventListener('click', () => {
+      body.classList.toggle('light-theme');
+    });
+
+    // Mini-Games
+    document.getElementById('flappy-bird').addEventListener('click', () => {
+      alert("Flappy Bird game will open in a new tab!");
+      window.open('https://flappybird.io/', '_blank');
+    });
+
+    document.getElementById('tic-tac-toe').addEventListener('click', () => {
+      alert("Tic-Tac-Toe game will open in a new tab!");
+      window.open('https://playtictactoe.org/', '_blank');
+    });
+
+    document.getElementById('memory-match').addEventListener('click', () => {
+      alert("Memory Match game will open in a new tab!");
+      window.open('https://www.memorymatchgame.com/', '_blank');
+    });
+
+    document.getElementById('snake-game').addEventListener('click', () => {
+      alert("Snake game will open in a new tab!");
+      window.open('https://playsnake.org/', '_blank');
+    });
+
+    document.getElementById('game-2048').addEventListener('click', () => {
+      alert("2048 game will open in a new tab!");
+      window.open('https://play2048.co/', '_blank');
+    });
+
+    document.getElementById('tetris').addEventListener('click', () => {
+      alert("Tetris game will open in a new tab!");
+      window.open('https://tetris.com/play-tetris', '_blank');
+    });
+
+    document.getElementById('pong').addEventListener('click', () => {
+      alert("Pong game will open in a new tab!");
+      window.open('https://www.ponggame.org/', '_blank');
+    });
+  </script>
+</body>
+</html>
